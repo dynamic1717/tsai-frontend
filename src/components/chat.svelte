@@ -2,6 +2,8 @@
   import { slide, fly, fade } from 'svelte/transition'
   import Icon from './icon.svelte'
   import { afterUpdate } from 'svelte'
+  // @ts-ignore
+  import { tooltip } from '@svelte-plugins/tooltips'
 
   type Message = {
     role: 'user' | 'bot'
@@ -86,7 +88,7 @@
     } catch (error) {
       throw error
     } finally {
-      // isPending = false
+      isPending = false
     }
   }
 
@@ -101,7 +103,7 @@
   }
 
   const clearConversation = () => {
-    // TODO open popup
+    // TODO open popover
     messages = []
   }
 </script>
@@ -126,13 +128,14 @@
 
   <form class="mt-4" on:submit|preventDefault={handleMessageSend}>
     <p class="text-center text-sm font-semibold text-secondary">
-      Attention! Your message length limit is 50 tokens(~50 words).
+      Your message length limit is 50 tokens (~50 words).
     </p>
     <div class="mt-2 flex items-center gap-2">
       <button
         type="button"
-        class="flex h-9 w-9 items-center justify-center rounded-full bg-highlightSecond"
+        class="flex h-9 w-9 items-center justify-center rounded-full bg-highlightSecond transition disabled:opacity-50"
         on:click={clearConversation}
+        disabled={messages.length === 0}
       >
         <Icon class="w-5 fill-secondary" name="broom" /></button
       >
@@ -151,8 +154,8 @@
         />
         <button
           type="submit"
-          class="flex h-9 w-9 items-center justify-center rounded-full bg-accent"
-          disabled={isPending}
+          class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent transition disabled:opacity-50"
+          disabled={isPending || inputValue.trim().length < 1}
         >
           <Icon class="h-auto w-3 fill-primary" name="chevron" />
         </button>
