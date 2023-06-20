@@ -12,6 +12,7 @@
   let chatElement: Element;
   let inputElement: HTMLInputElement;
   let isPending = false;
+  let requestError = "";
 
   onMount(() => {
     focusInput();
@@ -37,6 +38,7 @@
     }
 
     isPending = true;
+    requestError = "";
     const question = inputValue;
     addUserMessage();
     inputValue = "";
@@ -72,13 +74,13 @@
         messages.splice(loaderMessageIdx, 1);
         messages = messages;
       }
+      requestError = "Something went wrong. You can try again.";
       throw error;
     } finally {
       isPending = false;
+      await tick();
+      focusInput();
     }
-
-    await tick();
-    focusInput();
   };
 
   const addUserMessage = () => {
@@ -130,6 +132,10 @@
       </div>
     {/each}
   </div>
+
+  {#if requestError}
+    <div class="text-center text-base text-highlightSecond">{requestError}</div>
+  {/if}
 
   <form class="mt-4" on:submit|preventDefault={handleMessageSend}>
     <p class="text-center text-sm font-semibold text-secondary">
