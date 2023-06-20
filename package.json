@@ -10,7 +10,6 @@
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
   },
   "devDependencies": {
-    "@svelte-plugins/tooltips": "^0.1.6",
     "@sveltejs/adapter-auto": "^2.0.0",
     "@sveltejs/kit": "^1.5.0",
     "autoprefixer": "^10.4.14",

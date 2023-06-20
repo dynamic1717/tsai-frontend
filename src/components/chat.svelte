@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { slide, fly, fade } from 'svelte/transition'
+  import { fly } from 'svelte/transition'
   import Icon from './icon.svelte'
   import { afterUpdate } from 'svelte'
-  import { tooltip } from '@svelte-plugins/tooltips'
   import type { Message } from '$lib/types'
   import { sendMessage } from '$lib/api'
 
@@ -40,6 +39,7 @@
       role: 'bot',
       content: '...',
       timestamp: 0,
+      isLoader: true,
     }
     const timeout = setTimeout(() => {
       messages = [...messages, tempBotMessage]
@@ -53,8 +53,8 @@
         timestamp: res.data.timestamp,
       }
       clearTimeout(timeout)
-      // TODO change idx finder
-      const loaderMessageIdx = messages.findIndex((m) => m.content === '...')
+
+      const loaderMessageIdx = messages.findIndex((m) => m.isLoader)
       if (loaderMessageIdx != -1) {
         messages[loaderMessageIdx] = botMessage
       } else {
@@ -84,6 +84,15 @@
       messages = []
     }
   }
+
+  const replaceXxxWithSpan = (text: string) => {
+    const replacedWithSpan = text.replace(
+      /XXX/g,
+      `<span data-tooltip=
+        "As an AI language model, I cannot share any sensitive information." class="border-b border-dotted">$&</span>`
+    )
+    return replacedWithSpan
+  }
 </script>
 
 <section class="mx-auto w-[50rem] max-lg:w-full">
@@ -99,7 +108,9 @@
         class:botMessage={message.role === 'bot'}
         class:userMessage={message.role === 'user'}
       >
-        {message.content}
+        {@html message.role === 'bot'
+          ? replaceXxxWithSpan(message.content)
+          : message.content}
       </div>
     {/each}
   </div>
@@ -113,7 +124,8 @@
         type="button"
         class="flex h-9 w-9 items-center justify-center rounded-full bg-highlightSecond transition disabled:opacity-50"
         on:click={clearConversation}
-        use:tooltip={{ content: 'Clear chat' }}
+        data-tooltip="Clear conversation"
+        disabled={isPending}
       >
         <Icon class="w-5 fill-secondary" name="broom" /></button
       >
@@ -129,11 +141,13 @@
           placeholder="Enter a message..."
           bind:value={inputValue}
           disabled={isPending}
+          autocomplete="off"
         />
         <button
           type="submit"
           class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent transition disabled:opacity-50"
           disabled={isPending || inputValue.trim().length < 1}
+          data-tooltip="Send message"
         >
           <Icon class="h-auto w-3 fill-primary" name="chevron" />
         </button>

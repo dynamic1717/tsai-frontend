@@ -9,3 +9,35 @@
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
 }
+
+[data-tooltip] {
+  @apply relative;
+}
+
+[data-tooltip]:disabled {
+  @apply pointer-events-none;
+}
+
+[data-tooltip]:before,
+[data-tooltip]:after {
+  @apply pointer-events-none invisible absolute bottom-full left-1/2 z-10 -translate-x-1/2 translate-y-1 opacity-0 transition;
+}
+
+[data-tooltip]:before {
+  content: attr(data-tooltip);
+  @apply mb-1 w-max min-w-[6rem] max-w-[12.5rem] rounded-sm bg-black p-2 text-center text-sm text-primary;
+}
+
+[data-tooltip]:after {
+  content: '';
+  @apply h-3 w-3 rotate-45 bg-black;
+}
+
+[data-tooltip]:hover:before,
+[data-tooltip]:hover:after {
+  @apply visible -translate-y-0 opacity-100;
+}
+[data-tooltip='false']:hover:before,
+[data-tooltip='false']:hover:after {
+  @apply invisible opacity-0;
+}
