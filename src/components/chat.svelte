@@ -3,24 +3,8 @@
   import Icon from './icon.svelte'
   import { afterUpdate } from 'svelte'
   import { tooltip } from '@svelte-plugins/tooltips'
-  import { PUBLIC_SERVER_URL } from '$env/static/public'
-
-  type Message = {
-    role: 'user' | 'bot'
-    content: string
-    timestamp: number
-  }
-
-  type BaseResponse<T> = {
-    data: T
-    status: number
-    error: string
-  }
-
-  type ChatResponse = {
-    response: string
-    timestamp: number
-  }
+  import type { Message } from '$lib/types'
+  import { sendMessage } from '$lib/api'
 
   let messages: Message[] = []
 
@@ -62,24 +46,20 @@
     }, 500)
 
     try {
-      const response = await fetch(`${PUBLIC_SERVER_URL}/chat`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message: question,
-        }),
-      })
-      const botMessage = (await response.json()) as BaseResponse<ChatResponse>
-
-      const messageToPush: Message = {
+      const res = await sendMessage(question)
+      const botMessage: Message = {
         role: 'bot',
-        content: botMessage.data.response,
-        timestamp: botMessage.data.timestamp,
+        content: res.data.response,
+        timestamp: res.data.timestamp,
       }
       clearTimeout(timeout)
-      messages[messages.length - 1] = messageToPush
+      // TODO change idx finder
+      const loaderMessageIdx = messages.findIndex((m) => m.content === '...')
+      if (loaderMessageIdx != -1) {
+        messages[loaderMessageIdx] = botMessage
+      } else {
+        messages = [...messages, botMessage]
+      }
     } catch (error) {
       throw error
     } finally {
