@@ -1,18 +1,18 @@
 <script>
-  import Icon from './icon.svelte'
+  import Icon from "./icon.svelte";
 
   let links = [
     {
       id: 1,
-      url: '/',
-      icon: 'github',
+      url: "/",
+      icon: "github",
     },
     {
       id: 2,
-      url: '/',
-      icon: 'linkedin',
+      url: "/",
+      icon: "linkedin",
     },
-  ]
+  ];
 </script>
 
 <header class="flex items-center justify-between py-4">

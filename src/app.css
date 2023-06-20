@@ -29,7 +29,7 @@
 }
 
 [data-tooltip]:after {
-  content: '';
+  content: "";
   @apply h-3 w-3 rotate-45 bg-black;
 }
 
@@ -37,8 +37,8 @@
 [data-tooltip]:hover:after {
   @apply visible translate-y-0 opacity-100;
 }
-[data-tooltip='false']:hover:before,
-[data-tooltip='false']:hover:after {
+[data-tooltip="false"]:hover:before,
+[data-tooltip="false"]:hover:after {
   @apply invisible opacity-0;
 }
 
