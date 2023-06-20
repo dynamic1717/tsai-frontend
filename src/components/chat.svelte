@@ -1,7 +1,7 @@
 <script lang="ts">
   import { fly } from "svelte/transition";
   import Icon from "./icon.svelte";
-  import { afterUpdate } from "svelte";
+  import { afterUpdate, onMount, tick } from "svelte";
   import type { Message } from "$lib/types";
   import { sendMessage } from "$lib/api";
   import MessageLoader from "./message-loader.svelte";
@@ -10,7 +10,12 @@
 
   let inputValue = "";
   let chatElement: Element;
+  let inputElement: HTMLInputElement;
   let isPending = false;
+
+  onMount(() => {
+    focusInput();
+  });
 
   afterUpdate(() => {
     if (messages) {
@@ -33,18 +38,20 @@
 
     isPending = true;
     const question = inputValue;
-
     addUserMessage();
+    inputValue = "";
 
     const tempBotMessage: Message = {
       role: "bot",
-      content: "...",
+      content: "",
       timestamp: 0,
       isLoader: true,
     };
+    let loaderMessageIdx;
     const timeout = setTimeout(() => {
       messages = [...messages, tempBotMessage];
-    }, 400);
+      loaderMessageIdx = messages.findIndex(m => m.isLoader);
+    }, 300);
 
     try {
       const res = await sendMessage(question);
@@ -55,17 +62,23 @@
       };
       clearTimeout(timeout);
 
-      const loaderMessageIdx = messages.findIndex(m => m.isLoader);
-      if (loaderMessageIdx != -1) {
+      if (loaderMessageIdx && loaderMessageIdx != -1) {
         messages[loaderMessageIdx] = botMessage;
       } else {
         messages = [...messages, botMessage];
       }
     } catch (error) {
+      if (loaderMessageIdx) {
+        messages.splice(loaderMessageIdx, 1);
+        messages = messages;
+      }
       throw error;
     } finally {
       isPending = false;
     }
+
+    await tick();
+    focusInput();
   };
 
   const addUserMessage = () => {
@@ -75,7 +88,6 @@
       timestamp: new Date().getTime(),
     };
     messages = [...messages, newUserMessage];
-    inputValue = "";
   };
 
   const clearConversation = () => {
@@ -94,6 +106,10 @@
     );
     return replacedWithSpan;
   };
+
+  const focusInput = () => {
+    inputElement.focus();
+  };
 </script>
 
 <section class="mx-auto w-[50rem] max-lg:w-full">
@@ -102,7 +118,7 @@
       <div
         in:fly|local={{ x: -20 }}
         out:fly|local={{ y: -20 }}
-        class="w-fit rounded-2xl p-4 text-base text-primary"
+        class="w-fit max-w-[90%] rounded-2xl p-4 text-base text-primary"
         class:botMessage={message.role === "bot"}
         class:userMessage={message.role === "user"}
       >
@@ -135,11 +151,12 @@
           type="text"
           name="message"
           id="message"
-          class="w-full bg-transparent text-base text-textPrimary focus:outline-none"
+          class="w-full bg-transparent text-base text-textPrimary focus:outline-none disabled:opacity-50"
           placeholder="Enter a message..."
           bind:value={inputValue}
           disabled={isPending}
           autocomplete="off"
+          bind:this={inputElement}
         />
         <button
           type="submit"
