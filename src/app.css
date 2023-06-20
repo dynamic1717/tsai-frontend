@@ -35,9 +35,22 @@
 
 [data-tooltip]:hover:before,
 [data-tooltip]:hover:after {
-  @apply visible -translate-y-0 opacity-100;
+  @apply visible translate-y-0 opacity-100;
 }
 [data-tooltip='false']:hover:before,
 [data-tooltip='false']:hover:after {
   @apply invisible opacity-0;
+}
+
+::-webkit-scrollbar {
+  @apply w-1;
+}
+::-webkit-scrollbar-track {
+  @apply bg-secondary;
+}
+::-webkit-scrollbar-thumb {
+  @apply rounded-sm bg-accent;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-highlightFirst;
 }

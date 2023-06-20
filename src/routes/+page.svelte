@@ -14,7 +14,7 @@
   <title>Too Sensitive AI</title>
 </svelte:head>
 
-<section class="flex w-full flex-grow flex-col py-10">
+<section class="flex w-full flex-grow flex-col justify-between py-10">
   {#if mounted}
     <div transition:fade class="text-center">
       <h1 class="text-6xl capitalize">Too sensitive AI</h1>
@@ -22,7 +22,7 @@
         Project for lulz. Just a joke.
       </h2>
     </div>
-    <div transition:fade={{ delay: 200 }} class="mt-auto">
+    <div transition:fade={{ delay: 200 }}>
       <Chat />
     </div>
   {/if}
