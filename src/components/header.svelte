@@ -20,9 +20,9 @@
 
   <div class="grid grid-cols-2 gap-3">
     {#each links as { id, url, icon }}
-      <a href={url} target="_blank" rel="noreferrer">
+      <a href={url} target="_blank" rel="noreferrer" title={icon}>
         <Icon
-          class="h-6 w-6 fill-primary hover:fill-highlightFirst"
+          class="h-6 w-6 fill-primary transition-colors hover:fill-highlightFirst"
           name={icon}
         />
       </a>

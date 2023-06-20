@@ -2,8 +2,8 @@
   import { slide, fly, fade } from 'svelte/transition'
   import Icon from './icon.svelte'
   import { afterUpdate } from 'svelte'
-  // @ts-ignore
   import { tooltip } from '@svelte-plugins/tooltips'
+  import { PUBLIC_SERVER_URL } from '$env/static/public'
 
   type Message = {
     role: 'user' | 'bot'
@@ -11,30 +11,18 @@
     timestamp: number
   }
 
-  let messages: Message[] = [
-    {
-      role: 'user',
-      content: 'Hello',
-      timestamp: 0,
-    },
-    {
-      role: 'bot',
-      content:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Id, fugiat.',
-      timestamp: 0,
-    },
-    {
-      role: 'user',
-      content: 'Hello',
-      timestamp: 0,
-    },
-    {
-      role: 'bot',
-      content:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Id, fugiat. Lorem ipsum dolor sit amet consectetur adipisicing elit. Id, fugiat.',
-      timestamp: 0,
-    },
-  ]
+  type BaseResponse<T> = {
+    data: T
+    status: number
+    error: string
+  }
+
+  type ChatResponse = {
+    response: string
+    timestamp: number
+  }
+
+  let messages: Message[] = []
 
   let inputValue = ''
   let chatElement: Element
@@ -58,6 +46,7 @@
     if (!inputValue.trim()) {
       return
     }
+
     isPending = true
     const question = inputValue
 
@@ -73,18 +62,24 @@
     }, 500)
 
     try {
-      const response: Message = {
-        role: 'bot',
-        content:
-          'em ipsum dolor sit amet consectetur adipisicing elit. Id, fugiat.',
-        timestamp: 0,
-      }
-      console.log(messages)
-      setTimeout(() => {
-        clearTimeout(timeout)
+      const response = await fetch(`${PUBLIC_SERVER_URL}/chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: question,
+        }),
+      })
+      const botMessage = (await response.json()) as BaseResponse<ChatResponse>
 
-        messages[messages.length - 1] = response
-      }, 2000)
+      const messageToPush: Message = {
+        role: 'bot',
+        content: botMessage.data.response,
+        timestamp: botMessage.data.timestamp,
+      }
+      clearTimeout(timeout)
+      messages[messages.length - 1] = messageToPush
     } catch (error) {
       throw error
     } finally {
@@ -103,8 +98,11 @@
   }
 
   const clearConversation = () => {
-    // TODO open popover
-    messages = []
+    if (messages.length === 0) {
+      return
+    } else {
+      messages = []
+    }
   }
 </script>
 
@@ -128,14 +126,14 @@
 
   <form class="mt-4" on:submit|preventDefault={handleMessageSend}>
     <p class="text-center text-sm font-semibold text-secondary">
-      Your message length limit is 50 tokens (~50 words).
+      Message length limit is 50 tokens (~50 words).
     </p>
     <div class="mt-2 flex items-center gap-2">
       <button
         type="button"
         class="flex h-9 w-9 items-center justify-center rounded-full bg-highlightSecond transition disabled:opacity-50"
         on:click={clearConversation}
-        disabled={messages.length === 0}
+        use:tooltip={{ content: 'Clear chat' }}
       >
         <Icon class="w-5 fill-secondary" name="broom" /></button
       >
