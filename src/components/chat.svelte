@@ -133,7 +133,7 @@
     {/each}
   </div>
 
-  <form class="mt-4" on:submit|preventDefault={handleMessageSend}>
+  <form class="relative mt-4" on:submit|preventDefault={handleMessageSend}>
     <p class="text-center text-sm font-semibold text-secondary">
       Message length limit is 50 tokens (~50 words).
     </p>
@@ -173,7 +173,7 @@
 
     {#if requestError}
       <div
-        class="absolute bottom-2 left-1/2 -translate-x-1/2 text-center text-base text-highlightSecond"
+        class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-center text-base text-highlightSecond"
       >
         {requestError}
       </div>
