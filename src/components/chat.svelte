@@ -115,7 +115,7 @@
 </script>
 
 <section class="mx-auto w-[50rem] max-lg:w-full">
-  <div bind:this={chatElement} class="flex max-h-[50vh] flex-col space-y-4 overflow-y-auto px-2">
+  <div bind:this={chatElement} class="flex max-h-[42vh] flex-col space-y-4 overflow-y-auto px-2">
     {#each messages as message}
       <div
         in:fly|local={{ x: -20 }}
@@ -132,10 +132,6 @@
       </div>
     {/each}
   </div>
-
-  {#if requestError}
-    <div class="text-center text-base text-highlightSecond">{requestError}</div>
-  {/if}
 
   <form class="mt-4" on:submit|preventDefault={handleMessageSend}>
     <p class="text-center text-sm font-semibold text-secondary">
@@ -174,6 +170,14 @@
         </button>
       </label>
     </div>
+
+    {#if requestError}
+      <div
+        class="absolute bottom-2 left-1/2 -translate-x-1/2 text-center text-base text-highlightSecond"
+      >
+        {requestError}
+      </div>
+    {/if}
   </form>
 </section>
 
