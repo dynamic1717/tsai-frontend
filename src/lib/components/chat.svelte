@@ -5,6 +5,7 @@
   import type { Message } from "$lib/types";
   import { sendMessage } from "$lib/api";
   import MessageLoader from "./message-loader.svelte";
+  import { fade } from "svelte/transition";
 
   let messages: Message[] = [];
 
@@ -114,7 +115,7 @@
   };
 </script>
 
-<section class="mx-auto w-[50rem] max-lg:w-full">
+<section transition:fade={{ delay: 200 }} class="mx-auto mt-4 w-[50rem] max-lg:w-full">
   <div bind:this={chatElement} class="flex max-h-[42vh] flex-col space-y-4 overflow-y-auto px-2">
     {#each messages as message}
       <div

@@ -1,7 +1,7 @@
 <script>
   import "../app.css";
-  import Footer from "../components/footer.svelte";
-  import Header from "../components/header.svelte";
+  import Footer from "$lib/components/footer.svelte";
+  import Header from "$lib/components/header.svelte";
 </script>
 
 <main class="flex min-h-screen flex-col bg-bgc max-lg:h-auto">
