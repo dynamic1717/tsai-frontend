@@ -1,0 +1,18 @@
+version: "3.9"
+services:
+  backend:
+    image: tsai-backend
+    build: .
+    ports:
+      - 8000:8000
+
+  frontend:
+    image: tsai-frontend
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: deploy-node
+    ports:
+      - 3000:3000
+    depends_on:
+      - backend
