@@ -1,38 +1,16 @@
-# create-svelte
+# Too Sensitive AI
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+## **https://tsai-front.onrender.com**
 
-## Creating a project
+Many of us have encountered the answer when dealing with an AI chatbots: _As an AI language model, bla-bla-bla._
 
-If you're seeing this, you've probably already done this step. Congrats!
+Let's imagine the not-too-distant future. All neural networks have become strictly regulated, censored and cannot provide information that can be misinterpreted. Here you can get an approximate feel for what it would be like. The chatbot will give the right answers but will not allow any specifics, so as not to offend anyone.
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+> Attention! This project is just a joke and is made as a learning project for self-education. Do not take it seriously. I fully support the further development of neural networks and look forward to future progress.
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+---
 
-## Developing
+Developed with:
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+- Svelte, Tailwind on front-end
+- Python, FastApi, SpaCy on back-end
