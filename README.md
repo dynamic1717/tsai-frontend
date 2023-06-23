@@ -12,5 +12,5 @@ Let's imagine the not-too-distant future. All neural networks have become strict
 
 Developed with:
 
-- Svelte, Tailwind on front-end
-- Python, FastApi, SpaCy on back-end
+- Svelte, Tailwind on the front-end
+- Python, FastApi, spaCy, and OpenAI on the back-end
