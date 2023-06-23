@@ -5,8 +5,8 @@
 <section transition:fade class="text-center">
   <h1 class="text-6xl capitalize text-highlightSecond max-lg:text-5xl">Too sensitive AI</h1>
   <p class="mx-auto mt-4 max-w-7xl font-semibold text-primary max-lg:text-sm">
-    Many of us have encountered the answer when dealing with an AI chatbots: <span class="italic">
-      As an AI language model, bla-bla-bla.
+    Many of us have encountered the answer when dealing with AI chatbots: <span class="italic">
+      As an AI language model, blah-blah-blah...
     </span>
     <br />
     Let's imagine the not-too-distant future. All neural networks have become strictly regulated, censored
