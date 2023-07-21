@@ -6,6 +6,8 @@ Let's imagine the not-too-distant future. All neural networks have become strict
 
 ## **https://tsai-front.onrender.com**
 
+![Screenshot_3](https://github.com/dynamic1717/tsai-frontend/assets/63596280/ae8d3b54-63dc-4f44-972f-cd4e78443b2a)
+
 > ⚠️ This project is just a joke and is made as a learning project for self-education. Do not take it seriously. I fully support the further development of neural networks and look forward to future progress.
 
 ---
